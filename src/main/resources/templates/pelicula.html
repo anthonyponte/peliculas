@@ -8,7 +8,7 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet"
         integrity="sha384-GLhlTQ8iRABdZLl6O3oVMWSktQOp6b7In1Zl3/Jr59b6EGGoI1aFkw7cmDA6j6gD" crossorigin="anonymous" />
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.3/font/bootstrap-icons.css" />
-    <title>Pelicula</title>
+    <title>Película</title>
 </head>
 
 <body class="d-flex flex-column h-100">
@@ -20,14 +20,14 @@
                 <div th:if="${#fields.hasAnyErrors()}" th:insert="fragments/alert :: fragmentAlertDanger"></div>
                 <div class="card w-50">
                     <div class="card-header">
-                        <h5>Nueva pelicula</h5>
+                        <h5>Nueva película</h5>
                     </div>
                     <div class="card-body">
                         <input th:field="*{id}" type="hidden" />
                         <div class="form-floating mb-3">
                             <input th:field="*{titulo}" type="text" class="form-control" id="txtTitulo" name="txtTitulo"
-                                placeholder="Titulo" required />
-                            <label for="txtTitulo">Titulo</label>
+                                placeholder="Título" required />
+                            <label for="txtTitulo">Título</label>
                         </div>
 
                         <div class="form-floating mb-3">
@@ -38,14 +38,14 @@
 
                         <div class="form-floating mb-3">
                             <input th:field="*{genero}" type="text" class="form-control" id="txtGenero" name="txtGenero"
-                                placeholder="Genero" required />
-                            <label for="txtGenero">Genero</label>
+                                placeholder="Género" required />
+                            <label for="txtGenero">Género</label>
                         </div>
 
                         <div class="form-floating mb-3">
                             <input th:field="*{duracion}" type="number" step=".01" class="form-control" id="txtDuracion"
-                                name="txtDuracion" placeholder="Duracion" required />
-                            <label for="txtDuracion">Duracion</label>
+                                name="txtDuracion" placeholder="Duración" required />
+                            <label for="txtDuracion">Duración</label>
                         </div>
 
                         <div class="form-floating">

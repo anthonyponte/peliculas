@@ -12,7 +12,7 @@
 	<artifactId>peliculas-frontend</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<name>peliculas-frontend</name>
-	<description>Demo project for Spring Boot</description>
+	<description>CRUD de películas para el curso de Docker y Kubernetes Intermedio</description>
 	<url/>
 	<licenses>
 		<license/>
