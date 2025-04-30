@@ -1,7 +1,6 @@
 package com.anthonyponte.peliculas.model;
 
 import java.io.Serializable;
-import java.util.Date;
 
 import org.springframework.format.annotation.DateTimeFormat;
 
