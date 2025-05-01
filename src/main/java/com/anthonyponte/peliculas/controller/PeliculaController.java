@@ -6,6 +6,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -13,7 +14,8 @@ import org.springframework.web.context.request.async.DeferredResult;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.anthonyponte.peliculas.client.PeliculaRetrofitClient;
-import com.anthonyponte.peliculas.model.Pelicula;
+import com.anthonyponte.peliculas.dto.GeneroDTO;
+import com.anthonyponte.peliculas.dto.PeliculaDTO;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -27,13 +29,13 @@ public class PeliculaController {
     public DeferredResult<String> consultar(Model model) {
         DeferredResult<String> view = new DeferredResult<>();
 
-        Call<List<Pelicula>> call = PeliculaRetrofitClient.getPeliculaService().listarTodos();
-        call.enqueue(new Callback<List<Pelicula>>() {
+        Call<List<PeliculaDTO>> call = PeliculaRetrofitClient.getPeliculaService().listarPeliculas();
+        call.enqueue(new Callback<List<PeliculaDTO>>() {
             @Override
-            public void onResponse(Call<List<Pelicula>> call, Response<List<Pelicula>> response) {
+            public void onResponse(Call<List<PeliculaDTO>> call, Response<List<PeliculaDTO>> response) {
                 if (response.isSuccessful()) {
-                    List<Pelicula> listPelicula = response.body();
-                    model.addAttribute("listPelicula", listPelicula);
+                    List<PeliculaDTO> listPeliculas = response.body();
+                    model.addAttribute("listPeliculas", listPeliculas);
                     view.setResult("peliculas");
                 } else {
                     view.setErrorResult("error/500");
@@ -41,7 +43,7 @@ public class PeliculaController {
             }
 
             @Override
-            public void onFailure(Call<List<Pelicula>> call, Throwable t) {
+            public void onFailure(Call<List<PeliculaDTO>> call, Throwable t) {
                 view.setErrorResult("error/timeout");
             }
         });
@@ -51,7 +53,7 @@ public class PeliculaController {
 
     @RequestMapping("/nuevo")
     public String registrar(Model model) {
-        model.addAttribute("pelicula", new Pelicula());
+        model.addAttribute("pelicula", new PeliculaDTO());
         return "pelicula";
     }
 
@@ -59,12 +61,12 @@ public class PeliculaController {
     public DeferredResult<String> editar(@PathVariable("id") Long id, Model model) {
         DeferredResult<String> view = new DeferredResult<>();
 
-        Call<Pelicula> call = PeliculaRetrofitClient.getPeliculaService().obtenerPorId(id);
-        call.enqueue(new Callback<Pelicula>() {
+        Call<PeliculaDTO> call = PeliculaRetrofitClient.getPeliculaService().obtenerPorId(id);
+        call.enqueue(new Callback<PeliculaDTO>() {
             @Override
-            public void onResponse(Call<Pelicula> call, Response<Pelicula> response) {
+            public void onResponse(Call<PeliculaDTO> call, Response<PeliculaDTO> response) {
                 if (response.isSuccessful()) {
-                    Pelicula pelicula = response.body();
+                    PeliculaDTO pelicula = response.body();
                     model.addAttribute("pelicula", pelicula);
                     view.setResult("pelicula");
                 } else {
@@ -73,7 +75,7 @@ public class PeliculaController {
             }
 
             @Override
-            public void onFailure(Call<Pelicula> call, Throwable t) {
+            public void onFailure(Call<PeliculaDTO> call, Throwable t) {
                 view.setErrorResult("error/timeout");
             }
         });
@@ -82,7 +84,7 @@ public class PeliculaController {
     }
 
     @PostMapping("/guardar")
-    public DeferredResult<String> guardar(Pelicula pelicula, BindingResult result, RedirectAttributes attr) {
+    public DeferredResult<String> guardar(PeliculaDTO pelicula, BindingResult result, RedirectAttributes attr) {
         System.out.println(pelicula);
         DeferredResult<String> view = new DeferredResult<>();
 
@@ -91,11 +93,11 @@ public class PeliculaController {
             return view;
         }
 
-        Callback<Pelicula> callback = new Callback<Pelicula>() {
+        Callback<PeliculaDTO> callback = new Callback<PeliculaDTO>() {
             @Override
-            public void onResponse(Call<Pelicula> call, Response<Pelicula> response) {
+            public void onResponse(Call<PeliculaDTO> call, Response<PeliculaDTO> response) {
                 if (response.isSuccessful()) {
-                    Pelicula p = response.body();
+                    PeliculaDTO p = response.body();
                     String mensaje = pelicula.getId() == null
                             ? "Se guardó el pelicula '" + p.getTitulo() + "'"
                             : "Se actualizó el pelicula '" + p.getId() + "'";
@@ -107,7 +109,7 @@ public class PeliculaController {
             }
 
             @Override
-            public void onFailure(Call<Pelicula> call, Throwable t) {
+            public void onFailure(Call<PeliculaDTO> call, Throwable t) {
                 view.setErrorResult("error/timeout");
             }
         };
@@ -144,5 +146,18 @@ public class PeliculaController {
         });
 
         return view;
+    }
+
+    @ModelAttribute
+    public void init(Model model) {
+        try {
+            Response<List<GeneroDTO>> response = PeliculaRetrofitClient.getGeneroService().listarGeneros().execute();
+            if (response.isSuccessful()) {
+                List<GeneroDTO> listGeneros = response.body();
+                model.addAttribute("listGeneros", listGeneros);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 }

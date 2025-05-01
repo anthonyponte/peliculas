@@ -1,5 +1,6 @@
 package com.anthonyponte.peliculas.client;
 
+import com.anthonyponte.peliculas.service.GeneroService;
 import com.anthonyponte.peliculas.service.PeliculaService;
 
 import retrofit2.Retrofit;
@@ -17,5 +18,15 @@ public class PeliculaRetrofitClient {
                     .build();
         }
         return retrofit.create(PeliculaService.class);
+    }
+
+    public static GeneroService getGeneroService() {
+        if (retrofit == null) {
+            retrofit = new Retrofit.Builder()
+                    .baseUrl(BASE_URL)
+                    .addConverterFactory(GsonConverterFactory.create())
+                    .build();
+        }
+        return retrofit.create(GeneroService.class);
     }
 }

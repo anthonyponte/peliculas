@@ -37,9 +37,11 @@
                         </div>
 
                         <div class="form-floating mb-3">
-                            <input th:field="*{genero}" type="text" class="form-control" id="txtGenero" name="txtGenero"
-                                placeholder="Género" required />
-                            <label for="txtGenero">Género</label>
+                            <select th:field="*{generoId}" class="form-select" id="selGenero" name="selGenero" required>
+                                <option th:each="genero : ${listGeneros}" th:value="${genero.id}"
+                                    th:text="${genero.descripcion}"></option>
+                            </select>
+                            <label for="selGenero">Género</label>
                         </div>
 
                         <div class="form-floating mb-3">
