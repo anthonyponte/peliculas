@@ -7,6 +7,7 @@ services:
       ORACLE_SID: XE
       ORACLE_PDB: XEPDB1
       ORACLE_CHARACTERSET: AL32UTF8
+      NLS_LANG: AMERICAN_AMERICA.AL32UTF8
     ports:
       - "1521:1521"
       - "5500:5500"

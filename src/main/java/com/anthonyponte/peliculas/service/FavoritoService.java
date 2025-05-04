@@ -10,14 +10,15 @@ import retrofit2.http.DELETE;
 import retrofit2.http.GET;
 import retrofit2.http.POST;
 import retrofit2.http.Path;
+import retrofit2.http.Query;
 
 public interface FavoritoService {
-    @GET("/api/v1/peliculas/favoritos/{usuarioId}")
-    Call<List<FavoritoDTO>> listarFavoritosPorUsuarioId(@Path("usuarioId") String usuarioId);
+    @GET("/api/v1/peliculas/favoritos")
+    Call<List<FavoritoDTO>> listarFavoritosPorUsuarioId(@Query("usuarioId") String usuarioId);
 
     @POST("/api/v1/peliculas/favoritos/{usuarioId}/{peliculaId}")
-    Call<PeliculaDTO> guardarFavorito(@Path("usuarioId") String usuarioId, @Path("peliculaId") Long peliculaId);
+    Call<Void> guardarFavorito(@Path("usuarioId") String usuarioId, @Path("peliculaId") Long peliculaId);
 
     @DELETE("/api/v1/peliculas/favoritos/{usuarioId}/{peliculaId}")
-    Call<PeliculaDTO> eliminarFavorito(@Path("usuarioId") String usuarioId, @Path("peliculaId") Long peliculaId);
+    Call<Void> eliminarFavorito(@Path("usuarioId") String usuarioId, @Path("peliculaId") Long peliculaId);
 }

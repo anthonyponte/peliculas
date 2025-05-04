@@ -19,7 +19,7 @@
             <div th:if="${textAlertSuccess != null}" th:insert="fragments/alert :: fragmentAlertSuccess"></div>
             <div class="card">
                 <div class="card-header">
-                    <h5>Películas</h5>
+                    <h5><i class="bi bi-film"></i> Películas</h5>
                 </div>
                 <div class="card-body">
                     <a th:href="@{/peliculas/nuevo}" type="button" class="btn btn-primary mb-3"><i
@@ -72,62 +72,6 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"
         integrity="sha384-w76AqPfDkMBDXo30jS1Sgez6pr3x5MlQ1ZAGC+nuZB+EYdgRZgiwxhTBTkF7CXvN"
         crossorigin="anonymous"></script>
-
-    <script>
-        function toggleFavorito(button) {
-            const peliculaId = button.getAttribute('data-peliculaId');
-            let isFavorito = button.getAttribute('data-isFavorito') === 'true';
-            console.log('isFavorito', isFavorito);
-            console.log('peliculaId', peliculaId);
-            isFavorito = !isFavorito;
-            button.setAttribute('data-isFavorito', isFavorito);
-
-            if (isFavorito) {
-                button.classList.remove('btn-outline-secondary');
-                button.classList.add('btn-success');
-                button.querySelector('i').classList.remove('bi-star');
-                button.querySelector('i').classList.add('bi-star-fill');
-            } else {
-                button.classList.remove('btn-success');
-                button.classList.add('btn-outline-secondary');
-                button.querySelector('i').classList.remove('bi-star-fill');
-                button.querySelector('i').classList.add('bi-star');
-            }
-
-            fetch('/favoritos/guardar', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({
-                    peliculaId: peliculaId,
-                    favorito: isFavorito
-                }),
-            })
-                .then(response => {
-                    if (!response.ok) {
-                    }
-                    return response.json();
-                })
-                .then(data => {
-                })
-                .catch(error => {
-                    isFavorito = !isFavorito;
-                    button.setAttribute('data-isFavorito', isFavorito);
-                    if (isFavorito) {
-                        button.classList.remove('btn-outline-secondary');
-                        button.classList.add('btn-success');
-                        button.querySelector('i').classList.remove('bi-star');
-                        button.querySelector('i').classList.add('bi-star-fill');
-                    } else {
-                        button.classList.remove('btn-success');
-                        button.classList.add('btn-outline-secondary');
-                        button.querySelector('i').classList.remove('bi-star-fill');
-                        button.querySelector('i').classList.add('bi-star');
-                    }
-                });
-        }
-    </script>
 </body>
 
 </html>
