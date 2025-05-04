@@ -14,17 +14,17 @@ import retrofit2.http.Path;
 
 public interface PeliculaService {
     @POST("/api/v1/peliculas")
-    Call<PeliculaDTO> crear(@Body PeliculaDTO dto);
+    Call<PeliculaDTO> crearPelicula(@Body PeliculaDTO dto);
 
     @GET("/api/v1/peliculas")
     Call<List<PeliculaDTO>> listarPeliculas();
 
     @GET("/api/v1/peliculas/{id}")
-    Call<PeliculaDTO> obtenerPorId(@Path("id") Long id);
+    Call<PeliculaDTO> obtenerPeliculaPorId(@Path("id") Long id);
 
     @PUT("/api/v1/peliculas/{id}")
-    Call<PeliculaDTO> actualizar(@Path("id") Long id, @Body PeliculaDTO dto);
+    Call<PeliculaDTO> actualizarPelicula(@Path("id") Long id, @Body PeliculaDTO dto);
 
     @DELETE("/api/v1/peliculas/{id}")
-    Call<Void> eliminar(@Path("id") Long id);
+    Call<Void> eliminarPelicula(@Path("id") Long id);
 }

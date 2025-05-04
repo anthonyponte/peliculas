@@ -1,7 +1,7 @@
 services:
   oracledb:
-    container_name: ms-oradb
     image: container-registry.oracle.com/database/express:21.3.0-xe
+    container_name: ms-oradb
     environment:
       ORACLE_PWD: del1al9
       ORACLE_SID: XE
@@ -51,7 +51,7 @@ services:
     ports:
       - "9094:9094"
     environment:
-      MS_PELICULAS_URL: http://ms-peliculas:9091/api/v1/peliculas
+      - MS_PELICULAS_BACKEND_URL=http://ms-peliculas-backend:9091
     networks:
       - ms-network
     depends_on:
@@ -60,7 +60,7 @@ services:
       ms-peliculas-backend:
         condition: service_healthy
     healthcheck:
-      test: ["CMD", "curl", "-f", "http://127.0.0.1:9094/api/v1/peliculas/favoritos"]
+      test: ["CMD", "curl", "-f", "http://127.0.0.1:9094/api/v1/peliculas/favoritos?usuarioId=1"]
       interval: 30s
       timeout: 15s
       retries: 5

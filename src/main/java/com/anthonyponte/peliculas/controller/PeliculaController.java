@@ -5,6 +5,7 @@ import java.util.List;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -24,9 +25,8 @@ import retrofit2.Response;
 @Controller
 @RequestMapping("/peliculas")
 public class PeliculaController {
-
     @GetMapping
-    public DeferredResult<String> consultar(Model model) {
+    public DeferredResult<String> listarPeliculas(Model model) {
         DeferredResult<String> view = new DeferredResult<>();
 
         Call<List<PeliculaDTO>> call = PeliculaRetrofitClient.getPeliculaService().listarPeliculas();
@@ -52,16 +52,16 @@ public class PeliculaController {
     }
 
     @RequestMapping("/nuevo")
-    public String registrar(Model model) {
+    public String registrarPelicula(Model model) {
         model.addAttribute("pelicula", new PeliculaDTO());
         return "pelicula";
     }
 
     @GetMapping("/editar/{id}")
-    public DeferredResult<String> editar(@PathVariable("id") Long id, Model model) {
+    public DeferredResult<String> obtenerPeliculaPorId(@PathVariable Long id, Model model) {
         DeferredResult<String> view = new DeferredResult<>();
 
-        Call<PeliculaDTO> call = PeliculaRetrofitClient.getPeliculaService().obtenerPorId(id);
+        Call<PeliculaDTO> call = PeliculaRetrofitClient.getPeliculaService().obtenerPeliculaPorId(id);
         call.enqueue(new Callback<PeliculaDTO>() {
             @Override
             public void onResponse(Call<PeliculaDTO> call, Response<PeliculaDTO> response) {
@@ -84,8 +84,7 @@ public class PeliculaController {
     }
 
     @PostMapping("/guardar")
-    public DeferredResult<String> guardar(PeliculaDTO pelicula, BindingResult result, RedirectAttributes attr) {
-        System.out.println(pelicula);
+    public DeferredResult<String> guardarPelicula(PeliculaDTO pelicula, BindingResult result, RedirectAttributes attr) {
         DeferredResult<String> view = new DeferredResult<>();
 
         if (result.hasErrors()) {
@@ -99,8 +98,8 @@ public class PeliculaController {
                 if (response.isSuccessful()) {
                     PeliculaDTO p = response.body();
                     String mensaje = pelicula.getId() == null
-                            ? "Se guardó el pelicula '" + p.getTitulo() + "'"
-                            : "Se actualizó el pelicula '" + p.getId() + "'";
+                            ? "Se guardó la película '" + p.getTitulo() + "'"
+                            : "Se actualizó la película '" + p.getId() + "'";
                     attr.addFlashAttribute("textAlertSuccess", mensaje);
                     view.setResult("redirect:/peliculas");
                 } else {
@@ -115,24 +114,25 @@ public class PeliculaController {
         };
 
         if (pelicula.getId() == null) {
-            PeliculaRetrofitClient.getPeliculaService().crear(pelicula).enqueue(callback);
+            PeliculaRetrofitClient.getPeliculaService().crearPelicula(pelicula).enqueue(callback);
         } else {
-            PeliculaRetrofitClient.getPeliculaService().actualizar(pelicula.getId(), pelicula).enqueue(callback);
+            PeliculaRetrofitClient.getPeliculaService().actualizarPelicula(pelicula.getId(), pelicula)
+                    .enqueue(callback);
         }
 
         return view;
     }
 
-    @GetMapping("/eliminar/{id}")
-    public DeferredResult<String> eliminar(@PathVariable("id") Long id, RedirectAttributes attr) {
+    @DeleteMapping("/eliminar/{id}")
+    public DeferredResult<String> eliminarPelicula(@PathVariable Long id, RedirectAttributes attr) {
         DeferredResult<String> view = new DeferredResult<>();
 
-        Call<Void> call = PeliculaRetrofitClient.getPeliculaService().eliminar(id);
+        Call<Void> call = PeliculaRetrofitClient.getPeliculaService().eliminarPelicula(id);
         call.enqueue(new Callback<Void>() {
             @Override
             public void onResponse(Call<Void> call, Response<Void> response) {
                 if (response.isSuccessful()) {
-                    attr.addFlashAttribute("textAlertSuccess", "Se elimino el pelicula " + id);
+                    attr.addFlashAttribute("textAlertSuccess", "Se elimino la película " + id);
                     view.setResult("redirect:/peliculas");
                 } else {
                     view.setErrorResult("error/500");

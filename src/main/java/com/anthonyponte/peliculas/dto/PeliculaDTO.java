@@ -1,7 +1,6 @@
 package com.anthonyponte.peliculas.dto;
 
 import java.io.Serializable;
-import java.time.LocalDate;
 
 public class PeliculaDTO implements Serializable {
     private static final long serialVersionUID = 1L;
@@ -76,5 +75,12 @@ public class PeliculaDTO implements Serializable {
 
     public void setFavorito(boolean favorito) {
         this.favorito = favorito;
+    }
+
+    @Override
+    public String toString() {
+        return "PeliculaDTO [id=" + id + ", titulo=" + titulo + ", director=" + director + ", generoId=" + generoId
+                + ", generoDescripcion=" + generoDescripcion + ", duracion=" + duracion + ", fechaEstreno="
+                + fechaEstreno + ", favorito=" + favorito + "]";
     }
 }
