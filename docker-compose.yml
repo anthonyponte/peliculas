@@ -61,7 +61,7 @@ services:
       ms-peliculas-backend:
         condition: service_healthy
     healthcheck:
-      test: ["CMD", "curl", "-f", "http://127.0.0.1:9094/api/v1/peliculas/favoritos?usuarioId=1"]
+      test: ["CMD", "curl", "-f", "http://127.0.0.1:9094/api/v1/favoritos?usuarioId=1"]
       interval: 30s
       timeout: 15s
       retries: 5

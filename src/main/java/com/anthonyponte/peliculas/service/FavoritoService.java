@@ -3,7 +3,6 @@ package com.anthonyponte.peliculas.service;
 import java.util.List;
 
 import com.anthonyponte.peliculas.dto.FavoritoDTO;
-import com.anthonyponte.peliculas.dto.PeliculaDTO;
 
 import retrofit2.Call;
 import retrofit2.http.DELETE;
@@ -13,12 +12,12 @@ import retrofit2.http.Path;
 import retrofit2.http.Query;
 
 public interface FavoritoService {
-    @GET("/api/v1/peliculas/favoritos")
+    @GET("/api/v1/favoritos")
     Call<List<FavoritoDTO>> listarFavoritosPorUsuarioId(@Query("usuarioId") String usuarioId);
 
-    @POST("/api/v1/peliculas/favoritos/{usuarioId}/{peliculaId}")
+    @POST("/api/v1/favoritos/{usuarioId}/{peliculaId}")
     Call<Void> guardarFavorito(@Path("usuarioId") String usuarioId, @Path("peliculaId") Long peliculaId);
 
-    @DELETE("/api/v1/peliculas/favoritos/{usuarioId}/{peliculaId}")
+    @DELETE("/api/v1/favoritos/{usuarioId}/{peliculaId}")
     Call<Void> eliminarFavorito(@Path("usuarioId") String usuarioId, @Path("peliculaId") Long peliculaId);
 }

@@ -23,7 +23,7 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 @Controller
-@RequestMapping("/peliculas/favoritos")
+@RequestMapping("/favoritos")
 public class FavoritoController {
     @GetMapping
     public DeferredResult<String> listarPeliculaFavorito(Model model) {
@@ -125,7 +125,7 @@ public class FavoritoController {
             @Override
             public void onResponse(Call<Void> call, Response<Void> response) {
                 if (response.isSuccessful()) {
-                    view.setResult("redirect:/peliculas/favoritos");
+                    view.setResult("redirect:/favoritos");
                 } else {
                     view.setErrorResult("error/500");
                 }

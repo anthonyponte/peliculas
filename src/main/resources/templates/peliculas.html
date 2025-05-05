@@ -43,7 +43,7 @@
                             <tbody class="table-group-divider">
                                 <tr th:each="pelicula : ${listPeliculas}">
                                     <td>
-                                        <a th:href="@{/peliculas/favoritos/{id}(id=${pelicula.id})}"><i
+                                        <a th:href="@{/favoritos/{id}(id=${pelicula.id})}"><i
                                                 th:classappend="${pelicula.favorito} ? 'bi bi-star-fill' : 'bi bi-star'"></i></a>
                                     </td>
                                     <td th:text="${pelicula.id}"></td>
